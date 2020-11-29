@@ -1,4 +1,4 @@
-<b>Yêu cầu:</b>
+<b>Requiments:</b>
 - NodeJS
 - npm
 
