@@ -1,0 +1,76 @@
+<div class="header">
+	<nav class="navbar navbar-dark bg-purple">
+		<span class="navbar-brand mb-0">UiTiOt</span>
+		<!-- <span>
+			<button class="btn btn-outline-warning" ng-click="updateSensor()">Cập nhập cảm biến</button>
+			<button class="btn btn-outline-warning" ng-click="updateDateTime()">Cập nhập ngày giờ</button>
+		</span> -->
+	</nav>
+	<div>
+		<div class="content  mt-2 container">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-6 pb-2">
+							<div class="card border border-purple">
+								<div class="card-header text-light bg-purple">
+									Nhiệt độ
+								</div>
+								<div class="card-body">
+									<h2>{{temp}}°C</h2>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 pb-2">
+							<div class="card border border-purple">
+								<div class="card-header text-light bg-purple">
+									Độ ẩm
+								</div>
+								<div class="card-body">
+									<h2>{{humidity}}%</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card border mb-2 border-purple">
+								<div class="card-header text-light bg-purple">CÁC THIẾT BỊ ĐÈN</div>
+								<div class="card-body row">
+									<div class="col-md-6" ng-repeat="led_value in leds_status  track by $index">
+										<div class="card">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-md-6">
+														<h4 class="card-title">Đèn {{$index+1}}</h4>
+													</div>
+													<div class="col-md-4">
+														<div class="checkbox">
+															<input id="checkbox{{$index+1}}" type="checkbox" ng-true-value="1"
+																ng-false-value="0" ng-change="changeLED()" ng-model="leds_status[$index]" />
+															<label for="checkbox{{$index+1}}"></label>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 pb-2">
+					<div class="card border border-purple">
+						<div class="card-header text-light bg-purple">
+							Camera
+						</div>
+						<div class="card-body">
+							<img width="100%" height="100%" src="http://192.168.1.8:8000/stream.mjpg" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
