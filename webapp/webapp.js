@@ -18,23 +18,31 @@
 }).controller('Home', function($scope, mySocket) {
     $scope.temp = "";
 	$scope.humidity = "";
+	$scope.cameraStreamUrl = "";
     $scope.leds_status = [0, 0];
 	
 	$scope.changeLED = function() {
-		console.log("send LED ", $scope.leds_status)
+		//console.log("send LED ", $scope.leds_status)
 		
 		var json = {
 			"led": $scope.leds_status
 		}
 		mySocket.emit("LED", json)
 	}
+
+	mySocket.on('CAMERA', function(msg){
+		//console.log(msg);
+		$scope.cameraStreamUrl = msg;
+	})
 	
 	mySocket.on('TC', function(msg) {
-		$scope.temp = msg.TC.split(':')[1];
+		//console.log(msg);
+		$scope.temp = msg;
 	})
 
 	mySocket.on('HUM', function(msg) {
-		$scope.humidity = msg.HUM.split(':')[1];
+		//console.log(msg);
+		$scope.humidity = msg;
 	})
 	
 	mySocket.on('connect', function() {

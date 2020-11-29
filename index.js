@@ -1,4 +1,4 @@
-const PORT = 3000;
+require('dotenv').config();
 
 var http = require('http');
 var express = require('express');
@@ -6,21 +6,18 @@ var socketio = require('socket.io')
 var ip = require('ip');
 var app = express();
 var server = http.Server(app)
-
 var io = socketio(server);
-
 var webapp_nsp = io.of('/webapp')
 var esp8266_nsp = io.of('/esp8266')
-
 var middleware = require('socketio-wildcard')();
 var mqtt = require('mqtt');
-var mqttClient = mqtt.connect('mqtt://192.168.1.8');
+var mqttClient = mqtt.connect(process.env.MQTT_BROKER);
 
 esp8266_nsp.use(middleware);
 webapp_nsp.use(middleware);
 
-server.listen(process.env.PORT || PORT);
-console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + PORT)
+server.listen(process.env.PORT);
+console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + process.env.PORT)
 
 app.use(express.static("node_modules/"))
 
@@ -46,10 +43,10 @@ mqttClient.on('message', function (topic, message) {
 	console.log(topic + ': ' + message);
 	switch (topic) {
 		case '/dht/tc':
-			webapp_nsp.emit('TC', {'TC': `${message}`});
+			webapp_nsp.emit('TC', message.toString());
 			break;
 		case '/dht/hum':
-			webapp_nsp.emit('HUM', {'HUM': `${message}`});
+			webapp_nsp.emit('HUM', message.toString());
 			break;
 		default:
 			break;
@@ -75,6 +72,8 @@ esp8266_nsp.on('connection', function (socket) {
 webapp_nsp.on('connection', function (socket) {
 
 	console.log('webapp connected')
+
+	socket.emit('CAMERA', process.env.CAMERA_STREAM);
 
 	socket.on('disconnect', function () {
 		console.log("Disconnect socket webapp")
